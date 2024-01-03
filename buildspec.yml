@@ -3,16 +3,20 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing NGINX
-      - sudo apt-get update
-      - sudo apt-get install nginx -y
+        # install npm
+        - npm install
+       
   build:
     commands:
-      - echo Build started on `date`
-      - cp index.html /var/www/html/
-  post_build:
-    commands:
-      - echo Configuring NGINX
+        # run build script
+        - npm run build
+     
 artifacts:
+  # include all files required to run application
+  # notably excluded is node_modules, as this will cause overwrite error on deploy
   files:
-    - '**/*'
+    - public/**/*
+    - src/**/*
+    - package.json
+    - appspec.yml
+    - scripts/**/*
