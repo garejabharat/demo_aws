@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+ install:
+    commands:
+        # install npm
+        - npm install
+       
+ build:
+    commands:
+        # run build script
+        - npm run build
+        - npm pack 
+        
+        # Set the Nexus repository URL
+        - export REPO_URL=https://your-nexus-repository-url
+
+        # Authenticate with Nexus
+        - npm config set //your-nexus-repository-url/:_authToken "your-auth-token"
+
+        # Publish the package to the Nexus repository
+        - npm publish *.tgz --registry $REPO_URL
+     
+artifacts:
+ # include all files required to run application
+ # notably excluded is node_modules, as this will cause overwrite error on deploy
+ files:
+    - 'build/**/*'
+    - '*.tgz'
